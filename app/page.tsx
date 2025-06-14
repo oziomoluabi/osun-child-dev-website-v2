@@ -135,7 +135,7 @@ const dimensions = [
     title: "Education",
     icon: BookOpen,
     description:
-      "Discover Osun&apos;s progress in literacy (84.5%) and school attendance, alongside challenges like a 13% out-of-school rate.",
+      "Discover Osun's progress in literacy (84.5%) and school attendance, alongside challenges like a 13% out-of-school rate.",
     href: "/education",
   },
   {
@@ -188,6 +188,19 @@ const newsHighlights = [
 
 // Main Page component that renders the entire homepage
 export default function OsunDevelopmentPage() {
+  const [windowWidth, setWindowWidth] = React.useState(0)
+
+  React.useEffect(() => {
+    // Set initial window width
+    setWindowWidth(window.innerWidth)
+
+    // Optional: Add resize listener if you want responsive updates
+    const handleResize = () => setWindowWidth(window.innerWidth)
+    window.addEventListener("resize", handleResize)
+
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
   return (
     <MainLayout>
       <DottedMatrixBackground />
@@ -222,7 +235,7 @@ export default function OsunDevelopmentPage() {
               </ul>
             </nav>
             <div className="mt-2 hidden sm:block w-full max-w-md lg:max-w-lg">
-              <BinaryReadout length={window.innerWidth > 768 ? 80 : 50} />
+              <BinaryReadout length={windowWidth > 768 ? 80 : 50} />
             </div>
           </div>
           <LateralWing direction="right" />
@@ -461,7 +474,18 @@ export default function OsunDevelopmentPage() {
         {" "}
         {/* Slightly adjusted clipPath */}
         <div className="relative h-40 flex flex-col items-center justify-center px-4 sm:px-8 py-4">
-          
+          <div className="w-full flex justify-center items-center space-x-4 sm:space-x-8 relative z-10 mb-3">
+            <CircularGauge percentage={85} label="Literacy" />
+            <CircularGauge percentage={73} label="Enrolment (Prim. Net)" color="#66f4e1" />{" "}
+            {/* Updated from 70 to 73 based on text */}
+            <CircularGauge percentage={93} label="Non-Stunted U5" color="#66f4e1" />{" "}
+            {/* Updated from 65 to 93 (100-7.2) */}
+            <div className="hidden lg:block">
+              {" "}
+              {/* Show binary readout on larger screens in footer */}
+              <BinaryReadout length={40} />
+            </div>
+          </div>
           <div className="w-full text-center text-gray-400 text-xs sm:text-sm z-10">
             <p>&copy; {new Date().getFullYear()} Osun Child & Youth Development. All rights reserved.</p>
             <ul className="flex flex-wrap justify-center space-x-3 sm:space-x-4 mt-1">
